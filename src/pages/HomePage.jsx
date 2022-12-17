@@ -88,7 +88,7 @@ export default function HomePage() {
                     onClick={removeItem}
                 >
                     {clusters !== null && clusters.length > 0 ? (
-                        MapClusters(clusters, doubleTabClickHandler, nav)
+                        MapClusters(clusters, editCategoryName, nav, editCardSummary)
                     ) : (
                         <NotFound text="No clusters found" />
                     )}
@@ -102,7 +102,7 @@ export default function HomePage() {
                             add: false,
                             remove: false
                         })
-                        document.querySelector('header').scrollIntoView()
+                        document.querySelector('header')?.scrollIntoView()
                         if(!e.target.matches('li')) return
                         e.target.querySelector('input').checked = true
                     }}
@@ -157,6 +157,14 @@ export default function HomePage() {
 
     function inputHandler(e) {
         const protocols = ["https://", "http://"];
+        if(e.target.name === "name"){
+            const hasProtocol = ["http://", "https://"].some(protocol => e.target.value.includes(protocol))
+            if(hasProtocol){
+                e.target.value = e.target.value.replace("https://", '')
+                e.target.value = e.target.value.replace("http://", '')
+            }
+
+        }
         const value =
             e.target.name === "protocol"
                 ? protocols[Number(e.target.checked)]
@@ -168,11 +176,16 @@ export default function HomePage() {
         });
     }
 
-    function doubleTabClickHandler(e) {
-        // on double tab or click make target editable
+    function doubleClickHandler(){
         doubleTab++;
         setTimeout(() => (doubleTab = 0), 500);
-        if (doubleTab < 2) return;
+        if (doubleTab < 2) return false;
+        return true
+    }
+
+    function editCategoryName(e) {
+        // on double tab or click make target editable
+        if(!doubleClickHandler()) return
         // reserver old selectedCategory name
         const oldCatgeoryName = e.target.getAttribute("data-id");
         const name = setCategoryName(
@@ -287,9 +300,44 @@ export default function HomePage() {
             id: categories[0].id,
         });
     }
+
+    function editCardSummary(e){
+        const titleEdit = e.target.matches("span.category--title")
+        const descriptionEdit = e.target.matches("span.web-description") 
+        if(!titleEdit && !descriptionEdit) return
+        
+        e.preventDefault()
+
+        const edit = prompt(`Edit ${titleEdit ? 'Title': 'Description'} : `, e.target.innerText)
+        if(edit === null || !edit.toString().trim().length) return
+
+        const ele = e.target.parentElement.parentElement.parentElement
+
+        if(ele.tagName !== "LI") return
+        const id = ele.getAttribute('id')
+        const categoryId = ele.parentElement.getAttribute('data-category')
+        const category = clusters.findIndex(c => c.id === categoryId)
+        if(category === -1) return
+
+        const newItems = clusters[category].items.map(item => {
+            if(item.id === id){
+                if(titleEdit)
+                    item.title = edit
+                else
+                    item.description = edit
+            }
+            return item
+        })
+
+        clusters[category].items = newItems
+        const newClusters = [...clusters]
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newClusters))
+        setClusters(newClusters)
+    }
 }
 
-function MapClusters(clusters, doubleTabClickHandler, nav) {
+function MapClusters(clusters, editCategoryName, nav, editTitle) {
     let touch = {
         x: 0, y:0, endX: 0, endY: 0
     }
@@ -300,7 +348,7 @@ function MapClusters(clusters, doubleTabClickHandler, nav) {
         return (
             <li key={c.id} className="container">
                 <Category
-                    clickHandler={doubleTabClickHandler}
+                    clickHandler={editCategoryName}
                     categoryName={c.categoryName}
                     id={c.id}
                 />
@@ -314,10 +362,11 @@ function MapClusters(clusters, doubleTabClickHandler, nav) {
                             <React.Fragment key={item.name + i}>
                                 <Card
                                     url={item.url}
-                                    title={item.name.split(".")[0]}
+                                    title={item.title || item.name.split(".")[0]}
                                     description={item.description}
                                     id={item.id}
                                     isRemove={nav.remove}
+                                    editTitle={editTitle}
                                 />
                             </React.Fragment>
                         );
@@ -374,9 +423,6 @@ function MapClusters(clusters, doubleTabClickHandler, nav) {
         else if(direction === "rtl"){
             if(!card.style.gridColumn.includes('auto'))
                 card.style.gridColumn = `auto`
-            else{
-                card.style.gridColumn = `1/3`
-            }
         }
 
     }

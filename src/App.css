@@ -242,6 +242,8 @@ body::before{
         position: absolute;
         margin-left: 0.5rem;
         border: 1px solid #333;
+        background-color: white;
+        overflow: hidden;
         border-radius: 0.25rem;
         -webkit-border-radius: 0.25rem;
         -moz-border-radius: 0.25rem;
@@ -253,6 +255,7 @@ body::before{
         display: inline-block;
         padding: 0 0.2rem;
         font-size: 0.95rem;
+        
         font-family: var(--title);
     }
     .toogle-protocol-container label:hover {
@@ -350,6 +353,7 @@ body::before{
     }
     .category > div{
         max-width: 80%;
+        user-select: none;
     }
     .category-name {
         font-family: var(--heading);
@@ -470,7 +474,7 @@ body::before{
     }
     .summary > span:last-child {
         font-family: var(--describe);
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         line-height: 1rem;
         margin-top: .15rem;
     }
