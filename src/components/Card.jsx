@@ -5,7 +5,7 @@ function rand(num=255){
     return Math.floor(Math.random()*num)
 }
 
-export function Card({url, title, description, id, isRemove, editTitle}) {
+export function Card({url, logo, title, description, id, isRemove, editTitle}) {
     function urlParse(url){
         let u = null
         if(["http", "https"].some(protocol => url.includes(protocol))){
@@ -32,7 +32,7 @@ export function Card({url, title, description, id, isRemove, editTitle}) {
         >
             <a href={url} target="_blank" className="flex-col">
                 <div className="logo flex center user-select-none">
-                    <img src={`${getProtocol(url)}${getDomain(url)}/favicon.ico`} alt="google" 
+                    <img src={`${getProtocol(logo || url)}${getDomain(logo || url)}/favicon.ico`} alt="google" 
                         onError={(e) => {
                             e.target.style.visibility = 'hidden'
                             // e.target.parentElement.style.backgroundColor= `rgb(${rand()}, ${rand()}, ${rand()})`

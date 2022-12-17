@@ -12,6 +12,7 @@ import logo from "../assets/logo.png"
 export default function HomePage() {
     const [addWeb, setAddWeb] = useState({
         url: "",
+        logo: "",
         name: "",
         protocol: "https://",
         description: "",
@@ -362,6 +363,7 @@ function MapClusters(clusters, editCategoryName, nav, editTitle) {
                             <React.Fragment key={item.name + i}>
                                 <Card
                                     url={item.url}
+                                    logo={item.logo}
                                     title={item.title || item.name.split(".")[0]}
                                     description={item.description}
                                     id={item.id}

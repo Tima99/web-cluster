@@ -47,6 +47,7 @@ export function AddWeb({
                         autoFocus
                     />
                 </div>
+                
                 <div className="add-detail description">
                     <input
                         type="text"
@@ -55,12 +56,25 @@ export function AddWeb({
                         onChange={inputHandler}
                         name="description"
                         value={addWeb.description}
+                        tabIndex={"3"}
+                    />
+                </div>
+
+                <div className="add-detail">
+                    <input
+                        type="url"
+                        name="logo"
+                        id="web-logo"
+                        placeholder="(optional) Paste image link "
+                        onChange={inputHandler}
+                        value={addWeb.logo}
                         tabIndex={"2"}
                     />
                 </div>
+                
                 <button
                     className="add-icon"
-                    tabIndex={categories.length+4}
+                    tabIndex={categories.length+5}
                     onClick={addWebHandler} 
                 >
                     <BsPlusSquareFill />
@@ -73,7 +87,7 @@ export function AddWeb({
                 categories.map((category, i) => {
                     
                     return (
-                        <li key={category.id} tabIndex={i+3}>
+                        <li key={category.id} tabIndex={i+4}>
                             <Select 
                                 id={category.id}
                                 item={category.name} 
@@ -89,7 +103,7 @@ export function AddWeb({
                     onClick={(e) => {
                         setCategories("Enter new category name: ");
                     }}
-                    tabIndex={categories.length+3}
+                    tabIndex={categories.length+4}
                 >
                     New
                 </li>
