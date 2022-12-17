@@ -8,11 +8,16 @@ function rand(num=255){
 export function Card({url, logo, title, description, id, isRemove, editTitle}) {
     function urlParse(url){
         let u = null
-        if(["http", "https"].some(protocol => url.includes(protocol))){
-            u = new URL(url)
-        }else{
-            let _url = `https://${url}`
-            u = new URL(_url)
+        try {
+            if(["http", "https"].some(protocol => url.includes(protocol))){
+                u = new URL(url)
+            }else{
+                let _url = `https://${url}`
+                u = new URL(_url)
+            }
+        } catch (error) {
+            console.log(error);
+            alert(error.message)
         }
         return u
     }
@@ -32,7 +37,7 @@ export function Card({url, logo, title, description, id, isRemove, editTitle}) {
         >
             <a href={url} target="_blank" className="flex-col">
                 <div className="logo flex center user-select-none">
-                    <img src={`${getProtocol(logo || url)}${getDomain(logo || url)}/favicon.ico`} alt="google" 
+                    <img src={`${logo ? '' : getProtocol(url)}${logo ? logo : getDomain(url)+'/favicon.ico'}`} alt="google" 
                         onError={(e) => {
                             e.target.style.visibility = 'hidden'
                             // e.target.parentElement.style.backgroundColor= `rgb(${rand()}, ${rand()}, ${rand()})`

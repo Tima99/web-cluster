@@ -461,6 +461,7 @@ body::before{
     }
     .logo img {
         width: 100%;
+        object-fit: scale-down;
     }
     .summary > span {
         overflow: hidden;

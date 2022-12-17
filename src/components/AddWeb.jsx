@@ -56,7 +56,7 @@ export function AddWeb({
                         onChange={inputHandler}
                         name="description"
                         value={addWeb.description}
-                        tabIndex={"3"}
+                        tabIndex={"2"}
                     />
                 </div>
 
@@ -68,7 +68,7 @@ export function AddWeb({
                         placeholder="(optional) Paste image link "
                         onChange={inputHandler}
                         value={addWeb.logo}
-                        tabIndex={"2"}
+                        tabIndex={"3"}
                     />
                 </div>
                 
