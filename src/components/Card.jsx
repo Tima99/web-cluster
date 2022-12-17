@@ -17,7 +17,7 @@ export function Card({url, logo, title, description, id, isRemove, editTitle}) {
             }
         } catch (error) {
             console.log(error);
-            alert(error.message)
+            return {}
         }
         return u
     }
@@ -28,7 +28,7 @@ export function Card({url, logo, title, description, id, isRemove, editTitle}) {
 
     function getProtocol(url){
         const protocol = urlParse(url).protocol
-        return protocol
+        return `${protocol}//`
     }
 
     return (
